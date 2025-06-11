@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Include="Payload.fs" />
+    <Compile Include="Validation.fs" />
+    <Compile Include="TransactionStore.fs" />
+    <Compile Include="WebhookForwarder.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+</Project>
