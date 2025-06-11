@@ -1,0 +1,66 @@
+# Build results
+bin/
+obj/
+out/
+build/
+temp/
+
+# VS Code + Ionide
+.vscode/
+.fsac/
+*.ionide
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# Backup & cache
+*.bak
+*.cache
+*.tmp
+*.temp
+*.DS_Store
+*.swp
+
+# Paket
+.paket/
+paket-files/
+paket.restore.cached
+
+# Dotnet CLI
+project.lock.json
+project.fragment.lock.json
+
+# IDEs
+.idea/
+*.sln.iml
+
+# F# interactive
+*.fsi
+*.fsx~
+*.fsx.tmp
+*.fsx.dll
+*.fsx.exe
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+*.testsettings
+
+# Rider
+.idea/
+
+# SQLite DB (if generated at runtime)
+*.db
+
+# Generated Webhook Logs or temp
+logs/
+*.sqlite
+*.json~
