@@ -17,8 +17,6 @@ let handleWebhook (ctx: HttpContext) : Task =
         use reader = new System.IO.StreamReader(ctx.Request.Body)
         let! body = reader.ReadToEndAsync()
 
-        printfn "Payload received:\n%s" body
-
         try
             let payloadOption =
                 try
@@ -32,7 +30,7 @@ let handleWebhook (ctx: HttpContext) : Task =
                 match ctx.Request.Headers.TryGetValue("X-Webhook-Token") with
                 | true, values ->
                     let tokenValue = values.ToString()
-                    printfn "Token header received: '%s'" tokenValue
+                    printfn "Token header received"
                     tokenValue
                 | _ ->
                     printfn "Authorization header not present"
@@ -40,29 +38,24 @@ let handleWebhook (ctx: HttpContext) : Task =
 
             match isTokenValid token, payloadOption with
             | false, _ ->
-                printfn "🔒 Token inválido, ignorando"
                 ctx.Response.StatusCode <- 401
                 return! ctx.Response.WriteAsync("Unauthorized")
 
             | true, None ->
-                printfn "❌ Payload inválido (deserialization falhou)"
                 ctx.Response.StatusCode <- 400
                 return! ctx.Response.WriteAsync("Invalid JSON format")
 
             | true, Some payload when not (requiredFields payload) || not (validateAmount payload) ->
-                printfn "❌ Payload inválido, chamando /cancelar"
                 ctx.Response.StatusCode <- 400
                 do! ctx.Response.WriteAsync("Payload validation failed")
                 do! postJson "http://localhost:5001/cancelar" payload
                 return ()
 
             | true, Some payload when isDuplicate payload.transaction_id ->
-                printfn "⚠️ Transação duplicada"
                 ctx.Response.StatusCode <- 409
                 return! ctx.Response.WriteAsync("Duplicate transaction")
 
             | true, Some payload ->
-                printfn "✅ Transação válida, chamando /confirmar"
                 register payload.transaction_id
                 ctx.Response.StatusCode <- 200
                 do! ctx.Response.WriteAsync("OK")
